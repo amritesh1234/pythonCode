@@ -1,0 +1,42 @@
+# print("Hello Python again.!")
+
+# arr = []
+# print(len(arr))
+
+
+def solve( nums):
+    # Write your code here
+    s = sorted(nums)
+    start = -1
+    end = -1
+    for i in range(0, len(nums)):
+        if nums[i] != s[i]:
+             if start == -1:
+                 start = i
+
+        if nums[i] == s[i] and start > -1:
+                 end = i-1
+                 break
+
+    return end - start + 1
+
+print(solve([0, 1, 4, 3, 8, 9]))
+
+
+def solve1(nums):
+    # Write your code here
+    s = sorted(nums)
+    start = -1
+    end = -1
+    for i in range(0, len(nums)):
+        if nums[i] != s[i]:
+            if start == -1:
+                start = i
+
+            if nums[i] == s[i] and start > -1:
+                end = i - 1
+                break
+
+    return end - start + 1
+
+print(solve1([0, 1, 4, 3, 8, 9]))

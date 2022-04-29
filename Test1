@@ -1,0 +1,26 @@
+def solve( matrix):
+    # Write your code here
+    r = len(matrix)
+    c = len(matrix[0])
+    m = []
+    for row in range(r):
+        for col in range(c):
+            m.append(matrix[row][col])
+
+    s = sorted(m)
+    res = []
+    count = 0
+    for row in range(r):
+        l = []
+        for col in range(0, c, r):
+            l.append(s[count])
+            count += 1
+        res.append(l)
+
+    return res
+
+m = [[10, 20, 30],
+[5, 5, 3],
+[0, 10, 7]]
+
+print(solve(m))

@@ -1,0 +1,34 @@
+import re
+
+def solve(nums):
+        # Write your code here
+        indexes = (i for i, x in enumerate(nums) if x & 1 == 0)
+        for i in indexes:
+            j = next(indexes, None)
+            if j :
+                nums[i], nums[j] = nums[j], nums[i]
+        return nums
+
+a=[2, 3, 4, 6, 8]
+# print(solve(a))
+
+
+def split1():
+    s = '11000'
+    pattern = '(10|01)'
+    m = re.search(pattern, s)
+    while m:
+        s= re.sub(pattern, "", s)
+        m = re.search(pattern, s)
+
+    return len(s)
+
+k = "apple"
+t = "elppa"
+
+s = "".join(reversed(t))
+print(s)
+print(k == s)
+
+# print(split1())
+

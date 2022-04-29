@@ -1,0 +1,113 @@
+from re import split
+from copy import deepcopy
+from typing import List
+from collections import OrderedDict
+
+
+class Solution:
+    def candyCrush(self, board: List[List[int]]) -> List[List[int]]:
+        originalBoard = deepcopy(board)
+        row = len(board)
+        col = len(board[0])
+        hasMovement = True
+        dict = OrderedDict()
+        marked = set()
+
+        def getColumnCountAndMark(board, currentRowIndex, currentColIndex, value, marked, counter, traversedIndex):
+            if board[currentRowIndex][currentColIndex] != value or currentRowIndex < 0:
+                return 0
+            traversedIndex.add((currentRowIndex, currentColIndex))
+            getColumnCountAndMark(board, currentRowIndex - 1, currentColIndex, value, marked, counter + 1, traversedIndex)
+            marked.update(traversedIndex)
+            return len(traversedIndex)
+
+        def getRowCountAndMark(board, currentRowIndex, currentColIndex, value, marked, traversedIndex):
+            for i in range(currentColIndex, col):
+                if value == board[currentRowIndex][i]:
+                    traversedIndex.add((currentRowIndex, i))
+                else:
+                    break
+            if len(traversedIndex) > 2:
+                marked.update(traversedIndex)
+                return len(traversedIndex)
+            return 0
+
+        def gravityByKUnit(board, currentRowIndex, currentColIndex, k):
+            for r in range(currentRowIndex, -1, -1):
+                if r - k > -1:
+                    board[r][currentColIndex] = board[r - k][currentColIndex]
+                else:
+                    board[r][currentColIndex] = 0
+
+        while hasMovement:
+            for i in reversed(range(row)):
+                for j in range(col):
+                    if (i, j) not in marked and board[i][j] != 0:
+                        colCount = getColumnCountAndMark(board, i, j, board[i][j], marked, 0, set())
+                        rowCount = getRowCountAndMark(board, i, j, board[i][j], marked, set())
+                        if colCount < 3:
+                            colCount = 0
+                        if rowCount < 3:
+                            rowCount = 0
+                        if colCount or rowCount :
+                            dict[(i, j)] = (colCount, rowCount)
+
+            if dict:
+                for k, v in reversed(dict.items()):
+                    cri = k[0]
+                    cci = k[1]
+                    if v[0] > 0:
+                        gravityByKUnit(board, cri, cci, v[0])
+
+                    if v[1] > 0:
+                        lastIndex = cci+v[1]
+                        if v[0] and cci < col:
+                            cci+=1
+                        for c in range(cci, lastIndex):
+                            gravityByKUnit(board, cri, c, 1)
+            if not dict:
+                hasMovement = False
+            dict.clear()
+            marked.clear()
+
+        return board
+
+board =  [[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]
+# p = Solution().candyCrush(board)
+# print(p)
+
+# def fun(v):
+#     if v != '':
+#         return True
+#     return False
+#
+# s = "a3b555c67"
+# # ch = s.split()
+# ch = split("[1-9]", s)
+# f = filter(fun, ch)
+# for c in ch:
+#     print(c)
+
+islands = set()
+island = [(3,3), (3,4), (4,3), (4,4)]
+minx, miny = 3, 3
+islands.add(tuple((x[0] - minx, x[1] - miny) for x in island))
+islands.add(((0, 0), (0, 1), (1, 0), (1, 1)))
+print(islands)
+
+
+def majority(elements):
+    for i, e in enumerate(elements):
+        if i == 0 or count == 0:
+            majority = e
+            count = 1
+        elif majority == e:
+            count += 1
+        else:
+            count -= 1
+    return majority
+
+print(majority([1, 2, 1, 1, 3, 4, 0]))
+
+
+
